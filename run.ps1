@@ -1,16 +1,24 @@
-﻿Get-NAVAppInfo -ServerInstance <server instance name> -Tenant <tenant ID> | % { Uninstall-NAVApp -ServerInstance <server instance name> -Tenant <tenant ID> -Name $_.Name -Version $_.Version -Force}
-Get-NAVAppInfo -ServerInstance <server instance name> -Tenant <tenant ID> | % { Uninstall-NAVApp -ServerInstance <server instance name> -Tenant <tenant ID> -Name $_.Name -Version $_.Version -Force}
+﻿Import-Module -name "C:\Program Files\Microsoft Dynamics 365 Business Central\150\Service\NavAdminTool.ps1"
+$serverInstance = "bc150"
+$tenant = "default"
+$databaseName = "BC-Maia365-D0"
+$serverName = ""
+$instance = ""
 
-Get-NAVAppInfo -ServerInstance <server instance name>
+Get-NAVAppInfo -ServerInstance $serverInstance -Tenant $tenant | % { Uninstall-NAVApp -ServerInstance $serverInstance -Tenant $tenant -Name $_.Name -Version $_.Version -Force}
+Get-NAVAppInfo -ServerInstance $serverInstance -Tenant $tenant | % { Uninstall-NAVApp -ServerInstance $serverInstance -Tenant $tenant -Name $_.Name -Version $_.Version -Force}
 
-Unpublish-NAVApp -ServerInstance <server instance> -Name System -version <version>
+Get-NAVAppInfo -ServerInstance $serverInstance
+
+Unpublish-NAVApp -ServerInstance $serverInstance -Name System -version <version>
 
 
-Stop-NAVServerInstance -ServerInstance <server instance>
+Stop-NAVServerInstance -ServerInstance $serverInstance
 # Install Business Central
 
-Invoke-NAVApplicationDatabaseConversion -DatabaseServer <database server name>\<database server instance> -DatabaseName "<database name>"
-Set-NAVServerConfiguration -ServerInstance <server instance> -KeyName DatabaseName -KeyValue "<database name>"
-Restart-NAVServerInstance -ServerInstance <server instance>
+Invoke-NAVApplicationDatabaseConversion -DatabaseServer <database server name>\<database server instance> -DatabaseName $databaseName
+Set-NAVServerConfiguration -ServerInstance $serverInstance -KeyName DatabaseName -KeyValue $databaseName
+Restart-NAVServerInstance -ServerInstance $serverInstance
 
-Publish-NAVApp -ServerInstance <server instance> -Path "<path to the System.app file>" -PackageType SymbolsOnly
+Publish-NAVApp -ServerInstance $serverInstance -Path "<path to the System.app file>" -PackageType SymbolsOnly
+
