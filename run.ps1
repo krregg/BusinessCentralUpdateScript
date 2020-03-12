@@ -1,7 +1,7 @@
 ﻿Import-Module -name "C:\Program Files\Microsoft Dynamics 365 Business Central\150\Service\NavAdminTool.ps1"
 $serverInstance = "bc150"
 $tenant = "default"
-$databaseName = "BC-Maia365-D0"
+$databaseName = "dbname"
 $serverName = ""
 $instance = ""
 
