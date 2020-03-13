@@ -34,15 +34,15 @@ Import-Module -name $modulePath
 
 # uninstall apps
 Get-NAVAppInfo -ServerInstance $serverInstance -Tenant $tenant | % { Uninstall-NAVApp -ServerInstance $serverInstance -Tenant $tenant -Name $_.Name -Version $_.Version -Force}
-Get-NAVAppInfo -ServerInstance $serverInstance -Tenant $tenant | % { Unpublish-NAVApp -ServerInstance $serverInstance -Tenant $tenant -Name $_.Name -Version $_.Version -Force}
-Uninstall-NAVApp -ServerInstance $serverInstance -Name $baseAppName -Version $baseAppVersionOld
+Get-NAVAppInfo -ServerInstance $serverInstance -Tenant $tenant | % { Unpublish-NAVApp -ServerInstance $serverInstance -Name $_.Name -Version $_.Version -Force}
+Uninstall-NAVApp -ServerInstance $serverInstance -Tenant $tenant -Name $baseAppName -Version $baseAppVersionOld
 Unpublish-NAVApp -ServerInstance $serverInstance -Name $baseAppName -Version $baseAppVersionOld
-Uninstall-NAVApp -ServerInstance $serverInstance -Name $systemAppName -Version $systemAppVersionOld
+Uninstall-NAVApp -ServerInstance $serverInstance -Tenant $tenant -Name $systemAppName -Version $systemAppVersionOld
 Unpublish-NAVApp -ServerInstance $serverInstance -Name $systemAppName -Version $systemAppVersionOld
 
-Get-NAVAppInfo -ServerInstance $serverInstance
+$system = Get-NAVAppInfo -ServerInstance $serverInstance -SymbolsOnly
 
-Unpublish-NAVApp -ServerInstance $serverInstance -Name System
+Unpublish-NAVApp -ServerInstance $serverInstance -Name System -Version $system.version
 Stop-NAVServerInstance -ServerInstance $serverInstance
 
 # Install Business Central
